@@ -11,8 +11,6 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -100,6 +98,19 @@ public class EmployeeController {
         return Result.success();
     }
 
+    @Operation(summary = "根据id查询员工")
+    @GetMapping("{id}")
+    public Result<Employee> employee(@PathVariable Long id){
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
 
+    @Operation(summary = "更新员工信息")
+    @PutMapping
+    public Result update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("修改员工信息为：{}", employeeDTO);
 
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
 }
