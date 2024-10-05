@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author zazhi
  * @date 2024/10/4
@@ -39,4 +41,35 @@ public class CategoryController {
         PageResult result = categoryService.page(categoryPageQueryDTO);
         return Result.success(result);
     }
+
+    @Operation(summary = "根据id删除分类")
+    @DeleteMapping
+    public Result deleteById(Long id){
+        categoryService.deleteById(id);
+        return Result.success();
+    }
+
+    @Operation(summary = "修改分类")
+    @PutMapping
+    public Result update(@RequestBody CategoryDTO categoryDTO){
+        categoryService.update(categoryDTO);
+        return Result.success();
+    }
+
+    @Operation(summary = "修改分类状态")
+    @PostMapping("/status/{status}")
+    public Result startOrStop(@PathVariable Integer status, Long id){
+        categoryService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    @Operation(summary = "根据类型查询菜品")
+    @GetMapping("/list")
+    public Result<List<Category>> list(Integer type){
+        log.info("查询类型: {}", type);
+
+        List<Category> list = categoryService.list(type);
+        return Result.success(list);
+    }
+
 }
